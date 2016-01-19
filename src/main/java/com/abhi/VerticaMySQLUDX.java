@@ -91,17 +91,12 @@ public class VerticaMySQLUDX extends UDSource {
                         builder.append("|");
                     }
                 }
-
+                builder.append("\n");
                 String row = builder.toString();
-                srvInterface.log("got this row from db: " + row);
                 byte[] bytes = row.getBytes();
-                srvInterface.log("current value of offset " + output.offset);
-                srvInterface.log("current length of buffer " + output.buf.length);
 
-                System.arraycopy(bytes, 0, output.buf, 0, bytes.length);
+                System.arraycopy(bytes, 0, output.buf, output.offset, bytes.length);
                 output.offset += bytes.length;
-                srvInterface.log("current value of offset " + output.offset);
-                srvInterface.log("current value of buffer " + output.buf);
                 return StreamState.OUTPUT_NEEDED;
             } else {
                 srvInterface.log("came inside the function but there is no data in resultset");
